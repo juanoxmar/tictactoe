@@ -54,11 +54,18 @@ const displayController = (() => {
     const resButton = document.createElement('button');
     const div = document.createElement('div');
 
-    
-
     let turn = 0;
     let mark
     
+    const computerPlay = () => {
+        let id 
+        do{
+            id = Math.floor( Math.random() * Math.floor(9) );
+        }while(gameBoard.board[id] != undefined);
+
+        document.getElementById(id).click()
+    };
+
     Array.from(square).map(x => x.addEventListener('click', () => {
         if (bar.innerHTML == '') {
             if (x.innerHTML == '') {
@@ -69,6 +76,9 @@ const displayController = (() => {
                 gameBoard.choice(mark, x.id);
                 x.innerHTML = mark;
                 turn++;
+
+                if (turn % 2 == 0)
+                   computerPlay();
             };
         }
     }));
@@ -89,6 +99,7 @@ const displayController = (() => {
             div.remove();
             gameBoard.board.length = 0;
             turn = 0;
+            computerPlay();
         });
     };
 
@@ -102,7 +113,7 @@ const displayController = (() => {
         bar.appendChild(div);
     };
 
-    return { resetButton, winGame, tieGame }
+    return { resetButton, winGame, tieGame , computerPlay }
 })();
 
 const players = (name) => {
@@ -111,18 +122,15 @@ const players = (name) => {
 };
 
 const promptName = (() => {
-    let player1Name
-    do{
-        player1Name = prompt('First Player\'s Name:', 'Name');
-    }while(player1Name == null || player1Name == '');
-
     let player2Name
     do{
-        player2Name = prompt('Second Player\'s Name:', 'Name');
+        player2Name = prompt('Your Name:', 'Name');
     }while(player2Name == null || player2Name == '');
 
-    return{ player1Name, player2Name }
+    return{ player2Name }
 })();
 
-const player1 = players(promptName.player1Name);
+const player1 = players('Computer');
 const player2 = players(promptName.player2Name);
+
+displayController.computerPlay();
