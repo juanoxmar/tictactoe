@@ -110,5 +110,19 @@ const players = (name) => {
     return { name, winner };
 };
 
-const player1 = players(prompt('First Player\'s Name:', 'Name'));
-const player2 = players(prompt('Second Player\'s Name:', 'Name')); 
+const promptName = (() => {
+    let player1Name
+    do{
+        player1Name = prompt('First Player\'s Name:', 'Name');
+    }while(player1Name == null || player1Name == '');
+
+    let player2Name
+    do{
+        player2Name = prompt('Second Player\'s Name:', 'Name');
+    }while(player2Name == null || player2Name == '');
+
+    return{ player1Name, player2Name }
+})();
+
+const player1 = players(promptName.player1Name);
+const player2 = players(promptName.player2Name);
